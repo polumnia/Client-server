@@ -31,14 +31,12 @@ public class Server {
 					dataOut.flush();
 				}
 				clientSoc.shutdownOutput();
+				
 				ObjectInputStream dataIn = new ObjectInputStream(clientSoc.getInputStream());
-				Student to_DB;
-				to_DB = (Student) dataIn.readObject();
+				Student to_DB = (Student) dataIn.readObject();
 				clientSoc.shutdownInput();
-				//System.out.println("Here");
 				db.studentAnsw(to_DB.getName(), to_DB.getGroup(), to_DB.getAnswers(), to_DB.getMark(), to_DB.getTotal(), to_DB.getTime());
 				db.close();
-				dataIn.close();
 				clientSoc.close();
 			//}
 				serverSoc.close();
