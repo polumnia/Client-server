@@ -16,16 +16,18 @@ public class Client {
 		for (int i = 0; i < qst.length /*&& dataIn.readObject() != null*/; i++) {
 			qst[i] = (Question) dataIn.readObject();
 		}
-		dataIn.close();
-		MyFrame frame = new MyFrame(qst);
+		 
+		MyFrame frame = new MyFrame(qst, new ObjectOutputStream(fromServer.getOutputStream()));
 		frame.setVisible(true);
-		Student s = frame.getStudentInfo();
-		if(frame.isActive() != true)
-			s = frame.getStudentInfo();
-		ObjectOutputStream dataOut = new ObjectOutputStream(fromServer.getOutputStream());
-		dataOut.writeObject(s);
-		dataOut.flush();
-		dataOut.close();
+		while(true){
+			if(frame.isReady() == true) {
+				ObjectOutputStream dataOut = new ObjectOutputStream(fromServer.getOutputStream());
+				dataOut.writeObject(frame.getStudentInfo());
+				break;
+			}
+		}
+		//System.out.println("Here");
+		dataIn.close();
 		sc.close();
 		fromServer.close();
 		

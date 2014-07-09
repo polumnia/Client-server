@@ -18,23 +18,24 @@ public class Server {
 			System.out.println("Couldn't listen to port 4444");
 			System.exit(-1);
 		}
-		// dataIn;
-		ObjectOutputStream dataOut;
-		
+		// dataIn;		
 				System.out.println("Waiting for a client....");
 				Socket clientSoc = serverSoc.accept();
 				System.out.println("Connected!");
-				dataOut = new ObjectOutputStream(clientSoc.getOutputStream());
-				ObjectInputStream dataIn;
+				ObjectOutputStream dataOut = new ObjectOutputStream(new BufferedOutputStream(clientSoc.getOutputStream()));
+				 //dataIn;
 				for( int i = 0; i < 10; i++)
 				{
 					//System.out.println("Here!");
 					dataOut.writeObject(qst[i]);
 					dataOut.flush();
 				}
-				dataOut.close();
-				dataIn = new ObjectInputStream(clientSoc.getInputStream());
-				Student to_DB = (Student) dataIn.readObject();
+				clientSoc.shutdownOutput();
+				ObjectInputStream dataIn = new ObjectInputStream(clientSoc.getInputStream());
+				Student to_DB;
+				to_DB = (Student) dataIn.readObject();
+				clientSoc.shutdownInput();
+				//System.out.println("Here");
 				db.studentAnsw(to_DB.getName(), to_DB.getGroup(), to_DB.getAnswers(), to_DB.getMark(), to_DB.getTotal(), to_DB.getTime());
 				db.close();
 				dataIn.close();
@@ -43,4 +44,3 @@ public class Server {
 				serverSoc.close();
 	}
 }
-

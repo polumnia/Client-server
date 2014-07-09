@@ -1,14 +1,14 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-//import java.io.File;
-//import java.io.FileNotFoundException;
-//import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-//import java.util.Scanner;
+
+
+
 
 import javax.swing.*;
 /**
@@ -59,15 +59,18 @@ public class MyFrame extends JFrame {
     List<Integer> rand = RandQst();		//пять случайных вопросов
     String[] studentsAnswers = new String[rand.size()];
     String[] isTrue = new String[rand.size()];
-    Student st = null;
+    private Student st = null;
+    private boolean isReady = false;
+    ObjectOutputStream dataOut;
     int count;
     
     /**
      * Конструктор класса.
      * @throws SQLException 
      */
-	public MyFrame(Question[] qst) {
+	public MyFrame(Question[] qst, ObjectOutputStream soc) {
 		this.qst = qst;
+		dataOut = soc;
 		initComponents();
 	}
 	
@@ -346,9 +349,8 @@ public class MyFrame extends JFrame {
 	        else {
 	        	stop = System.currentTimeMillis();
 	        	int st_mark = 0;
-	        	//String[] toDB = new String[rand.size()];
+	        	isReady = true;
 	        	for(int i = 0; i < studentsAnswers.length; i++) { //выставление оценки
-	        		//toDB[i] = studentsAnswers[i];
 	        		if(studentsAnswers[i].equals(qst[rand.get(i)].GetRightAnswer())) {
 	        			st_mark++;
 	        			isTrue[i] = "True";
@@ -356,9 +358,8 @@ public class MyFrame extends JFrame {
 	        		else
 	        			isTrue[i] = "False";
 	        	}
-	        	//db.studentAnsw(tname.getText(), tgroup.getText(), studentsAnswers, isTrue, st_mark,(int)(stop - start)/1000); //внесение полученных ранее данных в базу данных 
 	        	st = new Student(tname.getText(), tgroup.getText(), studentsAnswers, isTrue, st_mark,(int)(stop - start)/1000);
-	     	    mark.setText("Оценка: " + Integer.toString(st_mark));
+	        	mark.setText("Оценка: " + Integer.toString(st_mark));
 	        	jLabel1.setText("Ответы студента");
 	        	jLabel2.setText("Правильные ответы");
 	        	jLabel6.setText(studentsAnswers[0]); //вывод ответов студента
@@ -427,6 +428,9 @@ public class MyFrame extends JFrame {
 	}
 	public Student getStudentInfo() {
 		return st;
+	}
+	public boolean isReady() {
+		return isReady;
 	}
 	/**
 	 * Получение результата тестирования.
