@@ -7,9 +7,6 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-
-
-
 import javax.swing.*;
 /**
  * Работу выполнили:
@@ -21,11 +18,9 @@ import javax.swing.*;
  * Создание графического интерфейса. 
  */
 public class MyFrame extends JFrame {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private JButton jButton1; //объявление переменных
+	
+    private static final long serialVersionUID = 1L;
+    private JButton jButton1; //объявление переменных
     private JLabel jLabel10;
     private JLabel jLabel11;
     private JLabel jLabel12;
@@ -433,15 +428,20 @@ public class MyFrame extends JFrame {
 	private void setMySize(int width, int height) {
 		this.setSize(new Dimension(width, height));
 	}
-	public String getStudentInfo() {
-		return st;
-	}
-	public boolean isReady() {
-		return isReady;
-	}
-	/**
+      /**
 	 * Получение результата тестирования.
 	 * @return строка с результатами полученными в ходе тестирования студента.
 	 */
+	public String getStudentInfo() {
+		return st;
+	}
+     /**
+     * Получение состояния формы.
+     * @return true or false
+     */
+	public boolean isReady() {
+		return isReady;
+	}
+	
 	
 }
