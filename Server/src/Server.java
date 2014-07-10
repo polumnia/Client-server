@@ -33,6 +33,7 @@ public class Server {
         String input = in.readLine();
         String[] parts = input.split(";");
         String name = parts[0].substring(11), group = parts[1];
+        //System.out.println(name);
         String[] answ = new String[5];
         String[] isRight = new String[5];
         int j = 0;
