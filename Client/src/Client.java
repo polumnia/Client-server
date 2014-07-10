@@ -19,13 +19,14 @@ public class Client {
 		fromServer.shutdownInput();
 		MyFrame frame = new MyFrame(qst, new ObjectOutputStream(fromServer.getOutputStream()));
 		frame.setVisible(true);
-		while(true) {
-		if(frame.isReady() == true) {
-				ObjectOutputStream dataOut = new ObjectOutputStream(fromServer.getOutputStream());
-				dataOut.writeObject(frame.getStudentInfo());
-				break;
-			}
+		while(frame.isReady() != true) {
+			continue;
 		}
+		String st = frame.getStudentInfo();
+		BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fromServer.getOutputStream()));
+		out.write(st);
+		ObjectOutputStream dataOut = new ObjectOutputStream(fromServer.getOutputStream());
+		dataOut.writeObject(frame.getStudentInfo());
 		sc.close();
 		fromServer.close();
 		

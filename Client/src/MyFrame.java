@@ -59,7 +59,8 @@ public class MyFrame extends JFrame {
     List<Integer> rand = RandQst();		//пять случайных вопросов
     String[] studentsAnswers = new String[rand.size()];
     String[] isTrue = new String[rand.size()];
-    private Student st = null;
+    //private Student st = null;
+    private String st = "";
     private boolean isReady = false;
     ObjectOutputStream dataOut;
     int count;
@@ -349,16 +350,22 @@ public class MyFrame extends JFrame {
 	        else {
 	        	stop = System.currentTimeMillis();
 	        	int st_mark = 0;
-	        	isReady = true;
-	        	for(int i = 0; i < studentsAnswers.length; i++) { //выставление оценки
+	        	st += tname.getText() + ";" + tgroup.getText() +";";
+	        	for(int i = 0; i < studentsAnswers.length; i++) { 
+	        		//выставление оценки
+	        		st += studentsAnswers[i] +";";
 	        		if(studentsAnswers[i].equals(qst[rand.get(i)].GetRightAnswer())) {
 	        			st_mark++;
 	        			isTrue[i] = "True";
 	        		}
 	        		else
 	        			isTrue[i] = "False";
+	        		st += isTrue[i] + ";";
 	        	}
-	        	st = new Student(tname.getText(), tgroup.getText(), studentsAnswers, isTrue, st_mark,(int)(stop - start)/1000);
+	        	st += Integer.toString(st_mark) +";" + Integer.toString((int)(stop - start)/1000);
+	        	//st = new Student(tname.getText(), tgroup.getText(), studentsAnswers, isTrue, st_mark,(int)(stop - start)/1000);
+	        	isReady = true;
+	        	// + studentsAnswers. +";" + isTrue
 	        	mark.setText("Оценка: " + Integer.toString(st_mark));
 	        	jLabel1.setText("Ответы студента");
 	        	jLabel2.setText("Правильные ответы");
@@ -426,7 +433,7 @@ public class MyFrame extends JFrame {
 	private void setMySize(int width, int height) {
 		this.setSize(new Dimension(width, height));
 	}
-	public Student getStudentInfo() {
+	public String getStudentInfo() {
 		return st;
 	}
 	public boolean isReady() {
